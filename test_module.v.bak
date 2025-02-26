@@ -1,0 +1,44 @@
+`timescale 1ns / 1ps
+
+module testbench;
+
+// Declare testbench signals
+reg clk;
+reg rst;
+wire [3:0] count;
+
+// Instantiate the test module
+test_module uut (
+    .clk(clk),
+    .rst(rst),
+    .count(count)
+);
+
+// Clock generation
+always #5 clk = ~clk;  // Toggle clock every 5 ns (10ns period)
+
+// Test sequence
+initial begin
+    // Initialize signals
+    clk = 0;
+    rst = 1;
+    
+    // Hold reset high for some time
+    #10 rst = 0;
+    
+    // Let the counter run for a few cycles
+    #50;
+    
+    // Apply reset again
+    rst = 1;
+    #10 rst = 0;
+    
+    // Let it run again
+    #50;
+    
+    // End simulation
+    $stop;
+end
+
+endmodule
+
